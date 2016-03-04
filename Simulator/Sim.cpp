@@ -1,5 +1,10 @@
 #include "Sim.h"
+#include "btBulletDynamicsCommon.h"
+#include <cstdlib>
 
+//Declare global variables for physical world and objects
+static btDiscreteDynamicsWorld *World;
+static core::list<btRigidBody *> Objects;
 
 Sim::Sim()
 {
@@ -129,6 +134,15 @@ int Sim::start(){
         const f32 frameDeltaTime = (f32)(now - then) / 1000.f; // Time in seconds
         then = now;
 
+        //Initialize bullet
+        btDefaultCollisionConfiguration *CollisionConfiguration = new btDefaultCollisionConfiguration();
+        btBroadphaseInterface *BroadPhase = new btAxisSweep3(btVector3(-1000, -1000, -1000), btVector3(1000, 1000, 1000));
+        btCollisionDispatcher *Dispatcher = new btCollisionDispatcher(CollisionConfiguration);
+        btSequentialImpulseConstraintSolver *Solver = new btSequentialImpulseConstraintSolver();
+        World = new btDiscreteDynamicsWorld(Dispatcher, BroadPhase, Solver, CollisionConfiguration);
+        
+        UpdatePhysics(DeltaTime);
+
         //temp stuff for testing
         SimObject *b = objs.at(0);
         vector3df acc = b->getAcc();
@@ -169,4 +183,99 @@ int Sim::start(){
     }
     device->closeDevice();
     return 0;
+}
+
+void CreateBuoy(const btVector3 &TPosition, btScalar TRadius, btScalar TMass){
+    ISceneNode *b = smgr->addSphereSceneNode();
+    if (!b) {
+        Logger::Log("Could not create sphere node");
+    }
+    else {
+        Buoy *ball = new Buoy("ball", b);
+        objs.push_back(ball);
+    }
+
+    // Set the initial position of the object
+    btTransform Transform;
+    Transform.setIdentity();
+    Transform.setOrigin(TPosition);
+
+    // Give it a default MotionState
+    btDefaultMotionState *MotionState = new btDefaultMotionState(Transform);
+
+    // Create the shape
+    btCollisionShape *Shape = new btSphereShape(TRadius);
+
+    // Add mass
+    btVector3 LocalInertia;
+    Shape->calculateLocalInertia(TMass, LocalInertia);
+
+    // Create the rigid body object
+    btRigidBody *RigidBody = new btRigidBody(TMass, MotionState, Shape, LocalInertia);
+
+    // Store a pointer to the irrlicht node so we can update it later
+    RigidBody->setUserPointer((void *)(Node));
+
+    // Add it to the world
+    World->addRigidBody(RigidBody);
+    Objects.push_back(RigidBody);
+}
+
+// Runs the physics simulation.
+// - TDeltaTime tells the simulation how much time has passed since the last frame so the simulation can run independently of the frame rate.
+void UpdatePhysics(u32 TDeltaTime) {
+
+    World->stepSimulation(TDeltaTime * 0.001f, 60);
+
+    btRigidBody *TObject;
+    // Relay the object's orientation to irrlicht
+    for(core::list<btRigidBody *>::Iterator it = Objects.begin(); it != Objects.end(); ++it) {
+
+        //UpdateRender(*Iterator);
+        scene::ISceneNode *Node = static_cast<scene::ISceneNode *>((*it)->getUserPointer());
+        TObject = *it;
+
+        // Set position
+        btVector3 Point = TObject->getCenterOfMassPosition();
+        Node->setPosition(core::vector3df((f32)Point[0], (f32)Point[1], (f32)Point[2]));
+
+        // Set rotation
+        btVector3 EulerRotation;
+        QuaternionToEuler(TObject->getOrientation(), EulerRotation);
+        Node->setRotation(core::vector3df(EulerRotation[0], EulerRotation[1], EulerRotation[2]));
+
+    }
+}
+
+void UpdateRender(btRigidBody *TObject) {
+    ISceneNode *Node = static_cast<ISceneNode *>(TObject->getUserPointer());
+
+    // Set position
+    btVector3 Point = TObject->getCenterOfMassPosition();
+    Node->setPosition(vector3df((f32)Point[0], (f32)Point[1], (f32)Point[2]));
+
+    // Set rotation
+    vector3df Euler;
+    const btQuaternion& TQuat = TObject->getOrientation();
+    quaternion q(TQuat.getX(), TQuat.getY(), TQuat.getZ(), TQuat.getW());
+    q.toEuler(Euler);
+    Euler *= RADTODEG;
+    Node->setRotation(Euler);
+}
+
+// Converts a quaternion to an euler angle
+void QuaternionToEuler(const btQuaternion &TQuat, btVector3 &TEuler) {
+    btScalar W = TQuat.getW();
+    btScalar X = TQuat.getX();
+    btScalar Y = TQuat.getY();
+    btScalar Z = TQuat.getZ();
+    float WSquared = W * W;
+    float XSquared = X * X;
+    float YSquared = Y * Y;
+    float ZSquared = Z * Z;
+
+    TEuler.setX(atan2f(2.0f * (Y * Z + X * W), -XSquared - YSquared + ZSquared + WSquared));
+    TEuler.setY(asinf(-2.0f * (X * Z - Y * W)));
+    TEuler.setZ(atan2f(2.0f * (X * Y + Z * W), XSquared - YSquared - ZSquared + WSquared));
+    TEuler *= core::RADTODEG;
 }
