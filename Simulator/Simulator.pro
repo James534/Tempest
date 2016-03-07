@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     DataStorage.cpp \
     InputHandler.cpp \
     Logger.cpp \
-    Sim.cpp
+    Sim.cpp \
+    Objects/Sub.cpp
 
 HEADERS += \
     Objects/Buoy.h \
@@ -33,7 +34,8 @@ HEADERS += \
     DataStorage.h \
     InputHandler.h \
     Logger.h \
-    Sim.h
+    Sim.h \
+    Objects/Sub.h
 
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/irrlicht-1.8.3/lib/Linux/release/ -lIrrlicht
 #else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/irrlicht-1.8.3/lib/Linux/debug/ -lIrrlicht

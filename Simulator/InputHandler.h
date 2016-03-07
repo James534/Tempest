@@ -6,10 +6,7 @@ class InputHandler : public irr::IEventReceiver
 {
 public:
     //TODO, MAKE ALL THIS INTO THE .CPP FILE
-    InputHandler(){
-        for (irr::u32 i=0; i<irr::KEY_KEY_CODES_COUNT; ++i)
-            KeyIsDown[i] = false;
-    }
+    InputHandler(bool);
 
     virtual bool OnEvent(const irr::SEvent& event){
         if (event.EventType == irr::EET_KEY_INPUT_EVENT)
@@ -20,8 +17,20 @@ public:
     {
         return KeyIsDown[keyCode];
     }
+
+    void update(irr::f32);
+
+    bool usingKeyboard();
+    void setAcc(irr::core::vector3df);
+    irr::core::vector3df getAcc();
+    void setRot(irr::core::vector3df);
+    irr::core::vector3df getRot();
 private:
     bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];
+
+    bool useKey;
+    irr::core::vector3df acc;
+    irr::core::vector3df rot;
 };
 
 #endif // INPUTHANDLER_H
