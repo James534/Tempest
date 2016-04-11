@@ -58,42 +58,38 @@ Sim::Sim(void* c)
     light1->setMaterialFlag(EMF_FOG_ENABLE, true);
 
     //Load obstacles (need to be separated so that buoys can move)
-    IAnimatedMesh* mesh = smgr->getMesh("../assets/obstacles.3ds");
-    IMeshSceneNode * node = 0;
-    if (mesh)
-        node = smgr->addOctreeSceneNode(mesh->getMesh(0), 0);
-
-    if (node)
-    {
-        node->setMaterialFlag(EMF_FOG_ENABLE, true);
-        node->setMaterialFlag(EMF_LIGHTING, true);
-        node->setScale(core::vector3df(20,20,20));
+    IAnimatedMesh* obsMesh = smgr->getMesh("assets/obstacles.3ds");
+    IMeshSceneNode * obstacles = 0;
+    scene::ITriangleSelector* obsSelector = 0;
+    if (obsMesh) {
+        obstacles = smgr->addOctreeSceneNode(obsMesh->getMesh(0), 0);
+        obstacles->setMaterialFlag(EMF_FOG_ENABLE, true);
+        obstacles->setMaterialFlag(EMF_LIGHTING, true);
+        obstacles->setScale(core::vector3df(20,20,20));
+        obstacles->setPosition(core::vector3df(0,0,0));
+        obsSelector = smgr->createOctreeTriangleSelector(
+                obstacles->getMesh(), obstacles, 128);
+        obstacles->setTriangleSelector(obsSelector);
     }
 
     IAnimatedMesh* roomMesh = smgr->getMesh("../assets/stadium.3ds");
     IMeshSceneNode * roomNode = 0;
-    if (roomMesh)
+    scene::ITriangleSelector* roomSelector = 0;
+    if (roomMesh) {
         roomNode = smgr->addOctreeSceneNode(roomMesh->getMesh(0), 0);
-
-
-    if (roomNode)
-    {
         roomNode->setMaterialFlag(EMF_FOG_ENABLE, true);
         roomNode->setMaterialFlag(EMF_LIGHTING, true);
         roomNode->setScale(core::vector3df(20,20,20));
+        roomSelector = smgr->createOctreeTriangleSelector(roomNode->getMesh(),
+                                                          roomNode, 128);
+        roomNode->setTriangleSelector(roomSelector);
+    }
+    scene::IMetaTriangleSelector* selector = smgr->createMetaTriangleSelector();
+    if (roomSelector && obsSelector) {
+        selector->addTriangleSelector(roomSelector);
+        selector->addTriangleSelector(obsSelector);
     }
 
-    scene::ITriangleSelector* selector = 0;
-
-    if (node)
-    {
-        node->setPosition(core::vector3df(0,0,0));
-
-        selector = smgr->createOctreeTriangleSelector(
-                node->getMesh(), node, 128);
-        node->setTriangleSelector(selector);
-        // We're not done with this selector yet, so don't drop it.
-    }
 
     //ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS(0, 100.0f, 0.05f);
     ICameraSceneNode* camera = smgr->addCameraSceneNode(s, vector3df(0,10,0), vector3df(0,0,0));
@@ -107,16 +103,17 @@ Sim::Sim(void* c)
     //cameras[1]->setUpVector(vector3df(-1,0,0));
     s->setPosition(vector3df(-200, 212, 443));
 
-    //device->getCursorControl()->setVisible(false);
+    //First vector input is the radius of the collidable object
     anim = smgr->createCollisionResponseAnimator(
-    selector, s, vector3df(20,20,20),
-    vector3df(0,-10,0), vector3df(0,20,0));
+    selector, s, vector3df(6.5f,6.5f,6.5f),
+    vector3df(0,0,0), vector3df(0,0,0));
 
     if (selector)
     {
         selector->drop(); // As soon as we're done with the selector, drop it.
-        camera->addAnimator(anim);
-        anim->drop();  // And likewise, drop the animator when we're done referring to it.
+        s->addAnimator(anim);
+        //camera->addAnimator(anim);
+        //anim->drop();  // And likewise, drop the animator when we're done referring to it.
     }
     //node->drop();
 
@@ -213,11 +210,6 @@ int Sim::start(){
 
             //ih->setAcc();
         }
-        //collision check
-        collision = Sim::anim->collisionOccurred();
-        if (collision)
-            Logger::Log("collision");
-
 
         driver->setViewPort(rect<s32>(0,0,resX, resY));
         driver->beginScene(true, true, SColor(255,100,101,140));

@@ -30,10 +30,11 @@ public:
     irr::core::vector3df getRot();
 
     std::string getName();
+    irr::scene::ISceneNode *node = 0;
+
 
 protected:
     std::string name;
-    irr::scene::ISceneNode *node = 0;
 
     irr::core::vector3df vel;
     irr::core::vector3df acc;
