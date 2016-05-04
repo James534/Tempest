@@ -4,10 +4,10 @@
 #include <iostream>
 #include "irrlicht.h"
 
-class Logger
+class SimLogger
 {
 public:
-    Logger();
+    SimLogger();
 
     /*
      * Logs the message

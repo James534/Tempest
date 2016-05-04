@@ -21,7 +21,7 @@ Sim::Sim(void* c)
     params.EventReceiver = ih;
     device = createDeviceEx(params);
     if (!device){
-        Logger::Log("FATAL- Could not create device");
+        SimLogger::Log("FATAL- Could not create device");
         return;
     }
     device->setWindowCaption(L"MDA Simulator 1.0");
@@ -40,7 +40,7 @@ Sim::Sim(void* c)
      */
     ISceneNode *b = smgr->addSphereSceneNode();
     if (!b){
-        Logger::Log("Could not create sphere node");
+        SimLogger::Log("Could not create sphere node");
     }else{
         Buoy *ball = new Buoy("ball", b);
         objs.push_back(ball);
@@ -222,7 +222,7 @@ int Sim::start(){
         smgr->drawAll();
         smgr->setActiveCamera(cameras[2]);
         driver->setViewPort(rect<s32>(0,resY/2,resX/2,resY));
-        smgr->drawAll();
+        //smgr->drawAll();
         smgr->setActiveCamera(cameras[3]);
         driver->setViewPort(rect<s32>(resX/2,resY/2,resX,resY));
         smgr->drawAll();
