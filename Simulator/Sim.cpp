@@ -47,8 +47,8 @@ Sim::Sim(void* c)
     }
 
     ISceneNode *s = smgr->addCubeSceneNode();
-    Sub *sub = new Sub("Sub", s, ih);
-    objs.push_back(sub);
+    SimSub *simSub = new SimSub("SimSub", s, ih);
+    objs.push_back(simSub);
 
     //Light and Fog
     ILightSceneNode* light1 = smgr->addLightSceneNode( 0, core::vector3df(0,500,0), video::SColorf(0.3f,0.3f,0.3f), 50000.0f, 1 );
@@ -152,7 +152,7 @@ int Sim::start(){
         //Logger::Log(frameDeltaTime);
         for (SimObject *so: objs){
 
-            if (so->getName() == "Sub"){
+            if (so->getName() == "SimSub"){
                 ih->update(frameDeltaTime, so->getRot());
 
                 so->setRot(ih->getRot());

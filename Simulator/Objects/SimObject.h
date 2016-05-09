@@ -2,8 +2,8 @@
 #define SIMOBJECT_H
 #include "vector3d.h"
 #include "irrlicht.h"
-#include "Logger.h"
-#include "DataStorage.h"
+#include "../SimLogger.h"
+#include "../DataStorage.h"
 #include <string>
 #include <math.h>
 #include <cmath>

@@ -4,8 +4,8 @@
 #include "irrlicht.h"
 #include "Objects/SimObject.h"
 #include "Objects/Buoy.h"
-#include "Objects/Sub.h"
-#include "Logger.h"
+#include "Objects/SimSub.h"
+#include "SimLogger.h"
 #include "InputHandler.h"
 #include "DataStorage.h"
 #include <vector>

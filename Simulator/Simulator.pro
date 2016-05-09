@@ -15,7 +15,7 @@ QT += widgets testlib opengl
 
 #FOR THE FOLLOWING, CHANGE TO WHERE EVER YOUR IRRLICHT FILES ARE
 #IF YOU GET ALOT OF QT ERRORS, YOU WILL NEED THE MODIFIED IRRLICHT FILES THAT I HAVE
-LIBS += -L/usr/lib/x86_64-linux-gnu/ -L$$PWD/irrlicht-1.8.3/lib/Linux/ -lIrrlicht -lGLU -lGL -lXrandr -lXext -lX11
+LIBS += -L$$PWD/irrlicht-1.8.3/lib/Linux/ -lIrrlicht -lGLU -lGL -lXrandr -lXext -lX11
 INCLUDEPATH += $$PWD/irrlicht-1.8.3/lib/Linux $$PWD/irrlicht-1.8.3/include
 unix:!macx: PRE_TARGETDEPS += $$PWD/irrlicht-1.8.3/lib/Linux/libIrrlicht.a
 
@@ -24,18 +24,18 @@ SOURCES += main.cpp \
     Objects/SimObject.cpp \
     DataStorage.cpp \
     InputHandler.cpp \
-    Logger.cpp \
+    SimLogger.cpp \
     Sim.cpp \
-    Objects/Sub.cpp
+    Objects/SimSub.cpp
 
 HEADERS += \
     Objects/Buoy.h \
     Objects/SimObject.h \
     DataStorage.h \
     InputHandler.h \
-    Logger.h \
+    SimLogger.h \
     Sim.h \
-    Objects/Sub.h
+    Objects/SimSub.h
 
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/irrlicht-1.8.3/lib/Linux/release/ -lIrrlicht
 #else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/irrlicht-1.8.3/lib/Linux/debug/ -lIrrlicht

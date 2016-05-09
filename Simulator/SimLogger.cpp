@@ -1,8 +1,4 @@
-#include "Logger.h"
-
-SimLogger::SimLogger()
-{
-}
+#include "SimLogger.h"
 
 void SimLogger::Log(std::string s){
     std::cout<<s<<std::endl;

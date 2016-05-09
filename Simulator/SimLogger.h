@@ -7,7 +7,6 @@
 class SimLogger
 {
 public:
-    SimLogger();
 
     /*
      * Logs the message
