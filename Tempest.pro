@@ -1,3 +1,5 @@
+
+
 LIBS += -L/usr/local/lib \
 -lopencv_core \
 -lopencv_imgproc \
@@ -5,6 +7,8 @@ LIBS += -L/usr/local/lib \
 -lopencv_video \
 -lopencv_videoio \
 -lopencv_imgcodecs
+
+LIBS += -L$$PWD/Simulator/irrlicht-1.8.3/lib/Linux/ -lIrrlicht -lGLU -lGL -lXrandr -lXext -lX11
 
 CONFIG += c++11
 greaterThan(QT_MAJOR_VERSION,4): QT += widgets 3dcore 3drenderer 3dinput
@@ -32,6 +36,9 @@ INCLUDEPATH += . \
                test/util/filter \
                test/util/data \
                /usr/local/include/opencv
+
+INCLUDEPATH += $$PWD/Simulator/irrlicht-1.8.3/lib/Linux $$PWD/Simulator/irrlicht-1.8.3/include
+unix:!macx: PRE_TARGETDEPS += $$PWD/Simulator/irrlicht-1.8.3/lib/Linux/libIrrlicht.a
 
 
 OTHER_FILES += src/settings/settings.txt
@@ -111,7 +118,14 @@ HEADERS += \
     src/view/CompetitionView.h \
     src/util/VideoLogger.h \
     src/Sub.h \
-    src/SubFactory.h
+    src/SubFactory.h \
+    Simulator/DataStorage.h \
+    Simulator/InputHandler.h \
+    Simulator/Sim.h \
+    Simulator/SimLogger.h \
+    Simulator/Objects/Buoy.h \
+    Simulator/Objects/SimObject.h \
+    Simulator/Objects/SimSub.h
 
 SOURCES += src/Main.cpp \
            test/CollectionTEST.cpp \
@@ -186,7 +200,14 @@ SOURCES += src/Main.cpp \
     src/view/CompetitionView.cpp \
     src/util/VideoLogger.cpp \
     src/Sub.cpp \
-    src/SubFactory.cpp
+    src/SubFactory.cpp \
+    Simulator/DataStorage.cpp \
+    Simulator/InputHandler.cpp \
+    Simulator/Sim.cpp \
+    Simulator/SimLogger.cpp \
+    Simulator/Objects/Buoy.cpp \
+    Simulator/Objects/SimObject.cpp \
+    Simulator/Objects/SimSub.cpp
 
 RESOURCES += \
     src/resources/resources.qrc
