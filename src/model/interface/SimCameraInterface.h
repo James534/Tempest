@@ -6,7 +6,6 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
-#include "SimBufferWindow.h"
 #include <iostream>
 
 
@@ -26,7 +25,7 @@ private:
 
 
    int position;
-   SimBufferWindow* bufferWindow;
+   cv::Mat *frame;
 
     Logger* logger = new Logger("CameraInterface");
 
@@ -70,11 +69,9 @@ public:
 
     /**
      * Constructor for Hardware Interface
-     * @param	bufferSize	buffer size for the interface
-     * @param 	pollFrequencey specifies how frequent video stream is pulled
      * @param	position	camera position
      */
-    SimCameraInterface(int position, SimBufferWindow* bufferWindow);
+    SimCameraInterface(int position);
 
     virtual void init();
 

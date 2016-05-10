@@ -105,15 +105,8 @@ HEADERS += \
     src/view/GUIView.h \
     src/view/SimulatorView.h \
     src/model/interface/SimFPGAInterface.h \
-    src/simulator/SimFPGA.h \
-    src/simulator/SimulatedEnvironment.h \
-    src/simulator/SimulatorEngine.h \
-    src/simulator/SimulatedSub.h \
-    src/simulator/PIDController.h \
     src/controller/task/PortalTask.h \
-    src/simulator/SimFrameGraph.h \
     src/model/interface/SimCameraInterface.h \
-    src/simulator/SimBufferWindow.h \
     src/controller/task/CompetitionTask.h \
     src/view/CompetitionView.h \
     src/util/VideoLogger.h \
@@ -187,15 +180,8 @@ SOURCES += src/Main.cpp \
     src/view/GUIView.cpp \
     src/view/SimulatorView.cpp \
     src/model/interface/SimFPGAInterface.cpp \
-    src/simulator/SimFPGA.cpp \
-    src/simulator/SimulatedEnvironment.cpp \
-    src/simulator/SimulatedSub.cpp \
-    src/simulator/SimulatorEngine.cpp \
-    src/simulator/PIDController.cpp \
     src/controller/task/PortalTask.cpp \
-    src/simulator/SimFrameGraph.cpp \
     src/model/interface/SimCameraInterface.cpp \
-    src/simulator/SimBufferWindow.cpp \
     src/controller/task/CompetitionTask.cpp \
     src/view/CompetitionView.cpp \
     src/util/VideoLogger.cpp \

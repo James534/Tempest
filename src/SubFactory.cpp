@@ -17,9 +17,7 @@
 #include "GUIView.h"
 #include "CompetitionView.h"
 #include "Controller.h"
-#include "SimFPGA.h"
 #include "SimFPGAInterface.h"
-#include "SimBufferWindow.h"
 #include <vector>
 #include <iostream>
 
@@ -80,6 +78,7 @@ Sub* SubFactory::makeSub(std::string subType) {
         }
     } else if (subType == "SIMULATOR") {
         logger->trace("Creating simulation sub");
+        /*
         Qt3D::QEntity* rootEntity = new Qt3D::QEntity();
         SimulatedSub* simSub = new SimulatedSub(rootEntity);
         SimulatedEnvironment* simEnv = new SimulatedEnvironment(rootEntity);
@@ -110,8 +109,7 @@ Sub* SubFactory::makeSub(std::string subType) {
             state->addViewer(view);
         }
 
-
-        bufferWindow->initialize();
+        bufferWindow->initialize();*/
     } else if (subType == "AUTONOMOUS") {
         logger->trace("Creating autonomous sub");
         states.push_back(new CameraState(FRONTCAM, camBufferSize));
