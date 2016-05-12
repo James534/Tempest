@@ -118,7 +118,8 @@ HEADERS += \
     Simulator/SimLogger.h \
     Simulator/Objects/Buoy.h \
     Simulator/Objects/SimObject.h \
-    Simulator/Objects/SimSub.h
+    Simulator/Objects/SimSub.h \
+    Simulator/SimCam.h
 
 SOURCES += src/Main.cpp \
            test/CollectionTEST.cpp \
@@ -193,7 +194,8 @@ SOURCES += src/Main.cpp \
     Simulator/SimLogger.cpp \
     Simulator/Objects/Buoy.cpp \
     Simulator/Objects/SimObject.cpp \
-    Simulator/Objects/SimSub.cpp
+    Simulator/Objects/SimSub.cpp \
+    Simulator/SimCam.cpp
 
 RESOURCES += \
     src/resources/resources.qrc

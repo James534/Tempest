@@ -51,12 +51,15 @@ void SimFPGAInterface::set(Attributes attr, int value) {
         break;
     case DEPTH:
         //simFPGA->set_target_depth(value);
+        ih->setDepth(value);
         break;
     case YAW:
         //simFPGA->set_target_yaw(value);
+        ih->setRot(0, value, 0);
         break;
     case SPEED:
         //simFPGA->set_target_speed(value);
+        ih->setAcc(value, 0, 0);
         break;
     case MOTOR:
         //simFPGA->startup_sequence();
@@ -74,8 +77,8 @@ void SimFPGAInterface::set(Attributes attr, int value) {
  */
 
 
-SimFPGAInterface::SimFPGAInterface(Properties* settings) : FPGAInterface(settings) {
-
+SimFPGAInterface::SimFPGAInterface(Properties* settings, InputHandler *ih) : FPGAInterface(settings) {
+    this->ih = ih;
 }
 
 void SimFPGAInterface::init() {

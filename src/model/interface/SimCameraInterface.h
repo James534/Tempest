@@ -6,6 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
+#include "../Simulator/SimCam.h"
 #include <iostream>
 
 
@@ -25,7 +26,7 @@ private:
 
 
    int position;
-   cv::Mat *frame;
+   SimCam *sc;
 
     Logger* logger = new Logger("CameraInterface");
 
@@ -71,7 +72,7 @@ public:
      * Constructor for Hardware Interface
      * @param	position	camera position
      */
-    SimCameraInterface(int position);
+    SimCameraInterface(int position, SimCam *sc);
 
     virtual void init();
 

@@ -45,6 +45,7 @@ void SimulatorView::initialize() {
     window->installEventFilter(this);
 
     // Initialize the Simulator 3D Engine
+    printf("Sim");
 }
 
 QSize SimulatorView::sizeHint() const {

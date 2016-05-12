@@ -22,8 +22,14 @@ public:
 
     bool usingKeyboard();
     void setAcc(irr::core::vector3df);
+    void setAcc(float x, float y, float z);
     irr::core::vector3df getAcc();
+
+    //TODO: IMPLEMENT FUNCTION
+    void setDepth(float height);
+
     void setRot(irr::core::vector3df);
+    void setRot(float x, float y, float z);
     irr::core::vector3df getRot();
 private:
     bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];

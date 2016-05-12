@@ -45,16 +45,43 @@ void InputHandler::update(irr::f32 dt, irr::core::vector3df dir){
         }else if (IsKeyDown(irr::KEY_KEY_E)){
             rot.Y += 50*dt;
         }
+    }else{
+        irr::core::vector3df temp;
+        temp.X = -cos(dir.Y*3.141589f/180.0f);
+        if (fabs(dir.Y) > 0){
+            float dZ = sin(dir.Y*3.141589f/180.0f);
+            temp.Z = dZ;
+        }
+        temp.normalize();
+        acc *= temp*5;
     }
 
+}
+
+void InputHandler::setDepth(float height){
+    /*irr::core::vector3df temp;
+    temp.X = 0;
+    temp.Z = 0;
+    temp.Y =
+    setAcc(temp);*/
+    //FUNCTION NOT IMPLEMENTED YET
 }
 
 
 void InputHandler::setAcc(irr::core::vector3df a){
     acc = a;
 }
+void InputHandler::setAcc(float x, float y, float z){
+    irr::core::vector3df temp(x, y, z);
+    setAcc(temp);
+}
+
 void InputHandler::setRot(irr::core::vector3df r){
     rot = r;
+}
+void InputHandler::setRot(float x, float y, float z){
+    irr::core::vector3df temp(x, y, z);
+    setRot(temp);
 }
 
 irr::core::vector3df InputHandler::getAcc(){

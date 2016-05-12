@@ -15,6 +15,7 @@
 #include "FPGAInterface.h"
 #include "FPGAData.h"
 #include "Properties.h"
+#include "../Simulator/InputHandler.h"
 
 /**
  * A concrete child of HwInterface that deals specifically with the simulated FPGA.
@@ -37,6 +38,7 @@ class SimFPGAInterface : public FPGAInterface {
 private:
 
     Logger* logger = new Logger("SimFPGAInterface");
+    InputHandler *ih;
 
 protected:
 
@@ -79,7 +81,7 @@ public:
     /**
      * Constructor for FPGA Interface
      */
-    SimFPGAInterface(Properties* settings);
+    SimFPGAInterface(Properties* settings, InputHandler *ih);
 
     virtual void init();
 

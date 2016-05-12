@@ -25,7 +25,7 @@
  */
 ImgData* SimCameraInterface::poll() {
 //    ImgData* new_data;
-    return decode(*frame);
+    return decode(*(sc->getFrame()));
 }
 /**
  * Decode the data.
@@ -53,8 +53,9 @@ int SimCameraInterface::getPosition() {
  */
 
 
-SimCameraInterface::SimCameraInterface(int position) {
+SimCameraInterface::SimCameraInterface(int position, SimCam *sc) {
     this->position = position;
+    this->sc = sc;
 }
 
 void SimCameraInterface::init() {

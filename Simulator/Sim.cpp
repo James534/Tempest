@@ -5,7 +5,8 @@
 Sim::Sim(void* c)
 {
     cap = (dataCap*) c;
-    this->frame = cap->frame;
+    this->frontFrame = cap->frontSC->getFrame();
+    this->downFrame = cap->downSc->getFrame();
     this->ih = cap->ih;
     this->runSim = cap->runSim;
     this->threadAlive = cap->threadAlive;
@@ -232,15 +233,24 @@ int Sim::start(){
 
         //convert Irrlicht render into OpenCV Mat
         IImage* image = driver->createScreenShot();
-        for(int y = 0; y < frame->rows; y++){
-            for(int x = 0; x < frame->cols; x++){
+        for(int y = 0; y < sizeY; y++){
+            for(int x = 0; x < sizeX; x++){
                 SColor color = image->getPixel(x, y).color;
                 if (color.getBlue()+150 > 255)
                     color.setBlue(255);
                 else
                     color.setBlue(color.getBlue()+150);
                 cv::Vec3b CVColor(color.getBlue(), color.getGreen(), color.getRed());
-                frame->at<cv::Vec3b>(y,x) = CVColor;
+                frontFrame->at<cv::Vec3b>(y,x) = CVColor;
+            }
+            for (int x = sizeX; x < sizeX*2; x++){
+                SColor color = image->getPixel(x, y).color;
+                if (color.getBlue()+150 > 255)
+                    color.setBlue(255);
+                else
+                    color.setBlue(color.getBlue()+150);
+                cv::Vec3b CVColor(color.getBlue(), color.getGreen(), color.getRed());
+                downFrame->at<cv::Vec3b>(y,x-sizeX) = CVColor;
             }
         }
         //cv::imshow("frame", *frame);
