@@ -59,7 +59,7 @@ void SimFPGAInterface::set(Attributes attr, int value) {
         break;
     case SPEED:
         //simFPGA->set_target_speed(value);
-        ih->setAcc(value, 0, 0);
+        ih->setTargetSpeed(value, 0, 0);
         break;
     case MOTOR:
         //simFPGA->startup_sequence();

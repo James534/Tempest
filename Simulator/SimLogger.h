@@ -15,6 +15,8 @@ public:
     static void Log(std::string);
     static void Log(float);
     static void Log(irr::core::vector3df);
+    static void Log(std::string, float);
+    static void Log(std::string, irr::core::vector3df);
 };
 
 #endif // LOGGER_H

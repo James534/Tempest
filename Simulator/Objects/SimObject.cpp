@@ -33,24 +33,26 @@ void SimObject::update(float dt){
         //if not and velocity of current dimension is > 0
         else if (fabs(vel.X) > 0){
             //apply friction to it
-            float temp = std::copysign(friction*dt, vel.X);
-            vel.X -= temp;
+            //float dirFri = std::copysign(friction*dt, vel.X);
+            float frictionDir = friction*dt * (fabs(vel.X)/vel.X);
+            vel.X -= frictionDir;
         }
 
         if (fabs(vel.Y+acc.Y*dt) < friction*dt){
             vel.Y = 0;
             acc.Y = 0;
         }else if (fabs(vel.Y) > 0){
-            float temp = std::copysign(friction*dt, vel.Y);
-            vel.Y -= temp;
+            float dirFri = std::copysign(friction*dt, vel.Y);
+            vel.Y -= dirFri;
         }
 
         if (fabs(vel.Z+acc.Z*dt) < friction*dt){
             vel.Z = 0;
             acc.Z = 0;
         }else if (fabs(vel.Z) > 0){
-            float temp = std::copysign(friction*dt, vel.Z);
-            vel.Z -= temp;
+            //float dirFri = std::copysign(friction*dt, vel.Z);
+            float frictionDir = friction*dt * (fabs(vel.Z)/vel.Z);
+            vel.Z -= frictionDir;
         }
     }
 
@@ -82,8 +84,8 @@ void SimObject::setAcc(irr::core::vector3df a){
     this->acc.X = a.X;
     this->acc.Y = a.Y;
     this->acc.Z = a.Z;
-    std::string msg = std::to_string(acc.X) + ' ' + std::to_string(acc.Y) + ' ' + std::to_string(acc.Z);
-    //Logger::Log(msg);
+    std::string msg = "Setting Acc: " + std::to_string(acc.X) + ' ' + std::to_string(acc.Y) + ' ' + std::to_string(acc.Z);
+    //SimLogger::Log(msg);
 }
 void SimObject::setRot(irr::core::vector3df r){
     node->setRotation(r);
@@ -91,6 +93,9 @@ void SimObject::setRot(irr::core::vector3df r){
 
 irr::core::vector3df SimObject::getAcc(){
     return acc;
+}
+irr::core::vector3df SimObject::getVel(){
+    return vel;
 }
 irr::core::vector3df SimObject::getPos(){
     return node->getPosition();

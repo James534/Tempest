@@ -83,7 +83,7 @@ Sub* SubFactory::makeSub(std::string subType) {
         states.push_back(new CameraState(DOWNCAM, camBufferSize));
         states.push_back(new FPGAState(FPGA, fpgaBufferSize));
 
-        InputHandler *ih = new InputHandler(false);
+        InputHandler *ih = new InputHandler(true);
         int frontCamPos = std::stoi(settings->getProperty("FRONT_CAM"));
         int downCamPos = std::stoi(settings->getProperty("DOWN_CAM"));
         cv::Mat *frontFrame = new cv::Mat(Sim::sizeY, Sim::sizeX, CV_8UC3);

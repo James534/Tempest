@@ -73,7 +73,7 @@ Sim::Sim(void* c)
         obstacles->setTriangleSelector(obsSelector);
     }
 
-    IAnimatedMesh* roomMesh = smgr->getMesh("../assets/stadium.3ds");
+    IAnimatedMesh* roomMesh = smgr->getMesh("assets/stadium.3ds");
     IMeshSceneNode * roomNode = 0;
     scene::ITriangleSelector* roomSelector = 0;
     if (roomMesh) {
@@ -154,29 +154,31 @@ int Sim::start(){
         for (SimObject *so: objs){
 
             if (so->getName() == "SimSub"){
-                ih->update(frameDeltaTime, so->getRot());
+                SimSub *ss = (SimSub*) so;
+                ih->setCurrentVel(ss->getVel());
+                ih->update(frameDeltaTime, ss->getRot());
 
-                so->setRot(ih->getRot());
+                ss->setRot(ih->getRot());
                 //Logger::Log(so->getRot());
-                so->setAcc(ih->getAcc());
-                so->update(frameDeltaTime);
+                ss->setAcc(ih->getAcc());
+                ss->update(frameDeltaTime);
 
                 if (ih->IsKeyDown(irr::KEY_KEY_R)){
-                   so->reset();
+                   ss->reset();
                 }
 
                 ///offsets for camera stuff
                 //vector3df temp = so->getPos();
                 vector3df tempPos, tempDir;
 
-                tempDir.X = -cos(so->getRot().Y*3.141589f/180.0f);
-                if (fabs(so->getRot().Y) > 0){
-                    float dZ = sin(so->getRot().Y*3.141589f/180.0f);
+                tempDir.X = -cos(ss->getRot().Y*3.141589f/180.0f);
+                if (fabs(ss->getRot().Y) > 0){
+                    float dZ = sin(ss->getRot().Y*3.141589f/180.0f);
                     tempDir.Z = dZ;
                     //Logger::Log(dZ);
                 }
                 tempDir.normalize();
-                tempPos = so->getPos();
+                tempPos = ss->getPos();
 
                 //camera attached to sub
                 //this call sets the position relative to sub
@@ -185,7 +187,7 @@ int Sim::start(){
                 //cameras[0]->setRotation(so->getRot());
                 //cameras[0]->setRotation(vector3df(0,0,0));
                 irr::core::vector3df tempBottom;
-                tempBottom = so->getPos();
+                tempBottom = ss->getPos();
                 tempBottom.Y -= 10;
                 tempBottom.X += tempDir.X/2;
                 tempBottom.Z += tempDir.Z/2;
@@ -240,7 +242,7 @@ int Sim::start(){
                     color.setBlue(255);
                 else
                     color.setBlue(color.getBlue()+150);
-                cv::Vec3b CVColor(color.getBlue(), color.getGreen(), color.getRed());
+                cv::Vec3b CVColor(color.getRed(), color.getGreen(), color.getBlue());
                 frontFrame->at<cv::Vec3b>(y,x) = CVColor;
             }
             for (int x = sizeX; x < sizeX*2; x++){
@@ -249,12 +251,13 @@ int Sim::start(){
                     color.setBlue(255);
                 else
                     color.setBlue(color.getBlue()+150);
-                cv::Vec3b CVColor(color.getBlue(), color.getGreen(), color.getRed());
+                cv::Vec3b CVColor(color.getRed(), color.getGreen(), color.getBlue());
                 downFrame->at<cv::Vec3b>(y,x-sizeX) = CVColor;
             }
         }
-        //cv::imshow("frame", *frame);
-        //cv::waitKey(1);
+//        cv::imshow("front", *frontFrame);
+//        cv::imshow("down", *downFrame);
+//        cv::waitKey(1);
         delete image;
 
     }

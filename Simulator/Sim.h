@@ -6,7 +6,7 @@
 #include "Objects/Buoy.h"
 #include "Objects/SimSub.h"
 #include "SimLogger.h"
-#include "InputHandler.h"
+#include "SimFPGA.h"
 #include "DataStorage.h"
 #include "SimCam.h"
 #include <vector>

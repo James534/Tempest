@@ -113,13 +113,13 @@ HEADERS += \
     src/Sub.h \
     src/SubFactory.h \
     Simulator/DataStorage.h \
-    Simulator/InputHandler.h \
     Simulator/Sim.h \
     Simulator/SimLogger.h \
     Simulator/Objects/Buoy.h \
     Simulator/Objects/SimObject.h \
     Simulator/Objects/SimSub.h \
-    Simulator/SimCam.h
+    Simulator/SimCam.h \
+    Simulator/SimFPGA.h
 
 SOURCES += src/Main.cpp \
            test/CollectionTEST.cpp \
@@ -189,13 +189,13 @@ SOURCES += src/Main.cpp \
     src/Sub.cpp \
     src/SubFactory.cpp \
     Simulator/DataStorage.cpp \
-    Simulator/InputHandler.cpp \
     Simulator/Sim.cpp \
     Simulator/SimLogger.cpp \
     Simulator/Objects/Buoy.cpp \
     Simulator/Objects/SimObject.cpp \
     Simulator/Objects/SimSub.cpp \
-    Simulator/SimCam.cpp
+    Simulator/SimCam.cpp \
+    Simulator/SimFPGA.cpp
 
 RESOURCES += \
     src/resources/resources.qrc

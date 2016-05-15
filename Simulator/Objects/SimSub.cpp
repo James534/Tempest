@@ -9,14 +9,20 @@ void SimSub::setCam(irr::scene::ICameraSceneNode *c){
     cam = c;
 }
 
-void SimSub::update()
+void SimSub::update(float dt)
 {
-    acc = ih->getAcc();
-    node->setRotation(ih->getRot());
-    //SimObject::update();
-    //cam->setPosition(node->getPosition());
-    //ih->setAcc(acc);
-    //ih->setRot(node->getRotation());
+    SimObject::update(dt);
+
+    //do the target depth stuff
+    //TODO: put this in the simFPGA
+    if (fabs(ih->getDepth() - targetDepth) > 5){
+        targetDepth = ih->getDepth();
+    }
+    if (targetDepth != -1 && fabs(node->getPosition().Y - targetDepth) > 3){
+        irr::core::vector3df pos = node->getPosition();
+        pos.Y = targetDepth;
+        node->setPosition(pos);
+    }
 }
 
 irr::scene::ICameraSceneNode* SimSub::getSceneNode(){

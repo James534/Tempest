@@ -13,3 +13,11 @@ void SimLogger::Log(irr::core::vector3df v){
 void SimLogger::Log(float f){
     std::cout << std::to_string(f) << std::endl;
 }
+
+void SimLogger::Log(std::string s, float f){
+    std::cout << s + " " + std::to_string(f) << std::endl;
+}
+
+void SimLogger::Log(std::string s, irr::core::vector3df v){
+    std::cout << s << " " << v.X << " " << v.Y << " " << v.Z << std::endl;
+}
