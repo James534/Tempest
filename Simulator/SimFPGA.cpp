@@ -58,9 +58,8 @@ void InputHandler::update(irr::f32 dt, irr::core::vector3df dir){
         }
         forward.normalize();
 
-        const float maxAcc = 5;
+        const float maxAcc = 3;
         if (targetVel.getLengthSQ() == 0){
-            SimLogger::Log("Zeroing acc");
             acc *= 0;
         }
         else if (vel.getLengthSQ() < targetVel.getLengthSQ()){
@@ -74,13 +73,15 @@ void InputHandler::update(irr::f32 dt, irr::core::vector3df dir){
         }
 
         acc = forward * acc.getLength();
-        SimLogger::Log("updating acc: ", acc);
     }
 
 }
 
 void InputHandler::setDepth(float targetDepth){
-    this->targetDepth = targetDepth;
+    this->targetDepth = 500 - targetDepth;
+    if (this->targetDepth < 150){
+        this->targetDepth = 150;
+    }
 }
 
 float InputHandler::getDepth (){
@@ -89,13 +90,11 @@ float InputHandler::getDepth (){
 
 void InputHandler::setTargetSpeed(irr::core::vector3df target){
     if (!target.equals(targetVel)){
-        SimLogger::Log("Setting target speed");
         targetVel = target;
     }
 }
 void InputHandler::setTargetSpeed(float x, float y, float z){
     irr::core::vector3df temp(x, y, z);
-    SimLogger::Log("set Speed: ", temp);
     setTargetSpeed(temp);
 }
 
